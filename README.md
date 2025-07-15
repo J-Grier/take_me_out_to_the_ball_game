@@ -1,6 +1,8 @@
 # Bayesian OPS+ Forecasting for Baseball Players
 
-This project implements a probabilistic model for predicting player-level OPS+ using rolling Statcast and performance features. The model is built for practical baseball applications such as trade evaluation, matchup planning, and scouting decisions.
+This project implements a probabilistic model for predicting player-level OPS+ using rolling Statcast and performance features. It's built for real-world baseball use — think trade evaluation, matchup planning, or finding the next diamond in the rough.
+
+While we showcase it here across the full 2022 season, the model really shines when you zoom in: a streaking hitter, a vulnerable bullpen, or a crucial pinch-hit decision. Whether you're building a lineup or playing armchair GM, this tool adds a sharp, probabilistic edge to your baseball brain.
 
 ## 🔍 Project Objective
 To build a **Bayesian forecasting model** that:
