@@ -23,7 +23,7 @@ To build a **Bayesian forecasting model** that:
    - Player-specific baselines and deltas
 3. **Modeling**:
    - Bayesian Neural Network with Pyro
-   - v1 prediction used as prior anchor
+   - he Bayesian model uses informative priors derived from a Gaussian Mixture Model (GMM) trained on historical OPS+ distributions. This allows the model to encode player-type-level expectations (e.g., power hitter, contact hitter, replacement level) and regularize predictions in the presence of noisy or sparse monthly data.
    - Full posterior predictive sampling
 4. **Evaluation**:
    - RMSE and CI coverage against test season (2022 held out)
@@ -50,6 +50,10 @@ To build a **Bayesian forecasting model** that:
 ## 🚧 Limitations
 - Players with too little data (e.g. injured stars) may be excluded unless specifically recovered
 - Model assumes monthly aggregation — can be adapted to game-level with daily anchoring
+
+> ⚠️ **Player Coverage Note**:  
+> Star players like Aaron Judge and Ronald Acuña Jr. do not appear in the dataset due to data availability or filtering steps. This affects the top end of the OPS+ distribution, and model evaluation should be interpreted in that context.
+
 
 ## 📈 Future Improvements
 - Incorporate pitcher-adjusted context for matchup-specific forecasts
