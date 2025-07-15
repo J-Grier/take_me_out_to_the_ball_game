@@ -35,9 +35,13 @@ To build a **Bayesian forecasting model** that:
 - **Matchup Planning**: Align lineups around short-term hot/cold indicators
 
 ## 📂 File Structure
-- `/data/` – Cleav5_predictions.csv contains monthly OPS+ predictions with 95% confidence intervals and full input features for each MLB hitter-seasonned and raw player performance & Statcast data
-- `/models/` – available on request
-- `/plots/` – Visuals of prediction intervals and coverage
+-/cleav5_predictions.csv      → Monthly OPS+ predictions with 95% credible intervals and full input features for each MLB hitter-season
+-/top25_pred_vs_actual_5.png  → Top 25 predicted OPS+ vs actuals
+-/bottom25_pred_vs_actual_5.png → Bottom 25 predicted OPS+ vs actuals
+-/coverage_by_decile_95CI.png → Coverage rate by predicted OPS+ decile
+-/bayesian_calibration_5.png  → Calibration plot with 95% credible intervals
+-/models/                     → Model code and checkpoints (available on request)
+
 
 ## 🚧 Limitations
 - Players with too little data (e.g. injured stars) may be excluded unless specifically recovered
