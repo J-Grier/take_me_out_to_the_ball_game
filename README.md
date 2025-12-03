@@ -1,44 +1,44 @@
-# Bayesian OPS+ Forecasting for Baseball Players
+# Take Me Out to the Ball Game  
+### Bayesian OPS+ Forecasting with Statcast Data
 
-This project implements a probabilistic model for predicting player-level OPS+ using rolling Statcast and performance features. It's built for real-world baseball use: think trade evaluation, matchup planning, or finding the next diamond in the rough.
+---
 
-Maybe it’s late July and you’re weighing a deadline deal. Maybe it’s spring and you’re scanning the waiver wire for upside in a non-roster invitee. Either way, the question’s the same: what can this guy do, not just what has he done?
+## Purpose  
+Major League Baseball teams, analysts, and scouts face a recurring challenge: predicting what a hitter will do next—not just what they’ve already done. Traditional statistics lag reality, and black-box models often fail to offer interpretable guidance.
 
-We ran the model league-wide on the 2022 season to test its range, but its real value shows when you dial in: a hot bat, a risky platoon, a scout’s gut feeling backed by numbers. Built with calibration in mind and grounded in data, this model gives you a reason to bet, or to pass, with confidence.
+This project builds a transparent, Bayesian forecasting pipeline that models hitter performance—specifically OPS+—using rolling Statcast features, player-specific baselines, and probabilistic inference. The aim is to support baseball decision-making, including trade valuation, matchup planning, waiver claims, and player development.
 
-## 🔍 Project Objective
-To build a **Bayesian forecasting model** that:
-- Predicts player OPS+ with uncertainty intervals
-- Incorporates rolling monthly metrics and Statcast data
-- Provides interpretable, variance-aware forecasts
-- Supports use cases like **trade decisions** and **game-by-game scouting**
+---
 
-## ⚾ Key Features
-- **Rolling 3-day and 100-day anchors**: Capture short- and long-term trends
-- **Delta features**: Track deviations in xwOBA and launch speed vs baseline
-- **Hierarchical Bayesian Model (Pyro)**: Predicts OPS+ with 95% credible intervals
-- **CI Coverage Evaluation**: Achieved ~72% coverage for 95% CI
-- **Model is robust to sparse data**, can be adapted for partial seasons or injury-recovery cases
+## Action  
+To achieve this goal, the project:
 
-## 🛠️ Workflow
-1. **Data Preprocessing**: Cleans and rolls monthly-level performance and Statcast data
-2. **Feature Engineering**:
-   - Rolling OPS, xwOBA, launch speed
-   - Player-specific baselines and deltas
-3. **Modeling**:
-   - Bayesian Neural Network with Pyro
-   - he Bayesian model uses informative priors derived from a Gaussian Mixture Model (GMM) trained on historical OPS+ distributions. This allows the model to encode player-type-level expectations (e.g., power hitter, contact hitter, replacement level) and regularize predictions in the presence of noisy or sparse monthly data.
-   - Full posterior predictive sampling
-4. **Evaluation**:
-   - RMSE and CI coverage against test season (2022 held out)
-   - Visualized residuals and top-25 predictions
+1. **Aggregates Statcast event-level and monthly performance data** into a clean analytical dataset.  
+2. **Engineers baseball-specific features**, including rolling OPS, xwOBA deltas, launch-speed trends, and hot-streak indicators.  
+3. **Constructs player-specific baselines**, enabling detection of deviations from a hitter’s own norms.  
+4. **Implements a hierarchical Bayesian model (Pyro)** to generate OPS+ predictions with credible intervals.  
+5. **Uses Gaussian Mixture Model (GMM) priors** to encode hitter archetype expectations (power hitters, contact hitters, replacement-level types).  
+6. **Performs posterior predictive sampling and calibration diagnostics**, including CI coverage and residual analysis.  
+7. **Evaluates the model league-wide on the 2022 season**, testing predictive stability and uncertainty accuracy.
 
-## 💡 Use Cases
-- **Trade Valuation**: Estimate future offensive contribution of trade targets
-- **Scouting Decisions**: Prioritize call-ups or platoon usage based on predictive confidence
-- **Matchup Planning**: Align lineups around short-term hot/cold indicators
+---
 
-## 📂 File Structure
+## Conclusions  
+The project finds that:
+
+• **Rolling quality-of-contact features** (3-day, 7-day, and 100-day deltas) meaningfully predict near-future OPS+.  
+• **Player-specific baselines outperform league-averaged metrics**, improving detection of trend shifts.  
+• **Bayesian priors stabilize predictions**, especially in sparse or noisy situations.  
+• **Credible intervals achieved ~72% coverage** for a nominal 95%, indicating conservative calibration.  
+• Predictive reliability is highest for players with consistent trending behavior; volatile or injured hitters display wider uncertainty bands.  
+• The pipeline provides **interpretable, variance-aware guidance** useful for baseball scouting and analytics operations.
+
+These outcomes align with the project’s purpose: deliver a transparent, interpretable forecasting foundation for MLB hitter performance without relying on opaque black-box models.
+
+---
+
+## Evidence  
+The repository includes all supporting materials:
 ```
 ├── data/
 │   └── bayesian_test_predictions5.csv → Monthly OPS+ predictions with 95% credible intervals and full input features
@@ -51,20 +51,103 @@ To build a **Bayesian forecasting model** that:
 ├── notebooks/                         → Training, evaluation, and posterior diagnostics
 ```
 
-## 🚧 Limitations
-- Players with too little data (e.g. injured stars) may be excluded unless specifically recovered
-- Model assumes monthly aggregation — can be adapted to game-level with daily anchoring
 
-> ⚠️ **Player Coverage Note**:  
-> Star players like Aaron Judge and Ronald Acuña Jr. do not appear in the dataset due to data availability or filtering steps. This affects the top end of the OPS+ distribution, and model evaluation should be interpreted in that context.
+---
 
+# Extended Technical Description
 
-## 📈 Future Improvements
-- Incorporate pitcher-adjusted context for matchup-specific forecasts
-- Add injury, age, or team effect priors
-- Expand to multi-output predictions (e.g., OBP, SLG separately)
+## Bayesian OPS+ Forecasting for Baseball Players  
+This project implements a probabilistic model for forecasting player-level OPS+ using rolling Statcast and performance trends. It’s designed with real-world baseball decision-making in mind—trade deadlines, scouting reports, platoon usage, and discovering untapped upside.
 
-## 👨‍💻 Author
-John Grier  
+Whether it’s late July and you’re weighing a trade return, or early April and you’re evaluating a non-roster invitee, the core question remains:
+
+**What can this player do next—not just what has he done?**
+
+The model was run league-wide on the 2022 season to test calibration, variance control, and predictive performance. Its real value emerges when zooming in to player-specific trajectories: identifying hot streaks worth trusting, cold streaks showing regression risk, or subtle signs of meaningful mechanical changes.
+
+---
+
+## Project Objective  
+Build a Bayesian forecasting model that:
+
+• Predicts OPS+ with interpretable **uncertainty intervals**  
+• Incorporates **rolling monthly metrics** and Statcast data  
+• Provides variance-aware insights tuned to individual hitters  
+• Supports baseball use cases such as trades, scouting, and lineup decisions
+
+---
+
+## Key Features  
+• Rolling 3-, 7-, and 100-day trend captures  
+• Delta features for xwOBA and launch speed  
+• Hierarchical Bayesian structure (Pyro)  
+• GMM priors encoding hitter archetypes  
+• Full posterior predictive sampling  
+• CI coverage evaluation and calibration plotting  
+• Robust to sparse monthly data and recoverable post-injury performance
+
+---
+
+## Workflow Overview  
+
+### Data Preprocessing  
+Cleans, aggregates, and aligns Statcast features with monthly performance data.
+
+### Feature Engineering  
+• Rolling OPS  
+• xwOBA deltas  
+• Launch speed trends  
+• Player-specific baseline deviations  
+• Hot/cold streak indicators
+
+### Modeling  
+• Hierarchical Bayesian model implemented in Pyro  
+• GMM-derived informative priors for OPS+ expectations  
+• Posterior sampling and inference  
+• Calibration analysis and interval evaluation
+
+### Evaluation  
+• RMSE for point predictions  
+• CI coverage metrics  
+• Residual analysis  
+• Top-25 and bottom-25 comparison plots
+
+---
+
+## Baseball Use Cases  
+
+### Trade Valuation  
+Identify trending players whose improvements are statistically meaningful, not noise.
+
+### Scouting & Player Development  
+Track minor-league progress, evaluate call-ups, and spot actionable mechanical trends.
+
+### Matchup Planning  
+Use credible intervals to determine risk-adjusted lineup decisions.
+
+### Recovery & Variance Management  
+Model gracefully handles sparse data, making it well-suited for injury-return evaluation.
+
+---
+
+## Limitations  
+• Players with limited recent data may be excluded unless inferred from priors alone.  
+• Monthly aggregation may smooth over game-level volatility; a daily model is possible but computationally intensive.  
+• Some elite players (e.g., Judge, Acuña) are missing due to data filtering constraints. This affects top-OPS+ calibration.
+
+---
+
+## Future Improvements  
+• Add pitcher-adjusted context for matchup-specific predictions  
+• Incorporate injury trajectories, age curves, or team-effect priors  
+• Expand to multi-output predictions (e.g., OBP, SLG separately)  
+• Explore daily-level Bayesian updating for more granular inference  
+
+---
+
+## Author  
+**John Grier**  
 MS Data Science Candidate, Illinois Tech  
 [github.com/J-Grier](https://github.com/J-Grier)
+
+
